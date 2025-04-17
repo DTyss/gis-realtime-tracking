@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         timeZone: 'Asia/Ho_Chi_Minh',
                         hour12: false
                     })
-                    
+
                     marker.bindPopup(`
                       <b>${loc.user}</b><br>
                       Cập nhật lúc: ${formattedTime} (GMT+7)<br>
@@ -88,19 +88,29 @@ document.addEventListener('DOMContentLoaded', function () {
             .then((loc) => {
                 const { latitude, longitude, timestamp } = loc
 
-                // Hiển thị marker với icon mặc định (không phải avatar)
+                // Format thời gian sang múi giờ Việt Nam (GMT+7)
+                const updatedAt = new Date(timestamp)
+                const formattedTime = updatedAt.toLocaleString('vi-VN', {
+                    timeZone: 'Asia/Ho_Chi_Minh',
+                    hour12: false
+                })
+
+                // Hiển thị marker với icon mặc định
                 const marker = L.marker([latitude, longitude], {
                     icon: L.icon({
-                        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-                        iconSize: [30, 48],
-                        iconAnchor: [15, 48],
-                        popupAnchor: [0, -40]
+                        iconUrl: `/static/${loc.avatar}`,
+                        iconSize: [42, 42],
+                        iconAnchor: [21, 42],
+                        popupAnchor: [0, -45],
+                        className: 'user-avatar-icon'
                     })
                 }).addTo(map)
 
-                // Gắn popup có nút tìm đường đi đến vị trí user đó
+                // Gắn popup với nội dung đồng bộ như avatar marker
                 marker.bindPopup(`
-                    <b>${username}</b><br>${timestamp}<br>
+                    <b>${username}</b><br>
+                    Cập nhật lúc: ${formattedTime} (GMT+7)<br>
+                    Tọa độ: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}<br>
                     <button class="btn btn-sm btn-primary mt-2 route-btn"
                             data-lat="${latitude}" data-lng="${longitude}">
                       Tìm đường đi
