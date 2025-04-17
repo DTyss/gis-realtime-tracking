@@ -55,7 +55,7 @@ def register_view(request):
 
         user = User.objects.create_user(username=username, password=password, email=email)
         auth_login(request, user)
-        return redirect('login')
+        return redirect('map')
 
     return render(request, 'tracking/register.html')
 
