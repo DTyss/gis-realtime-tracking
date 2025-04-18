@@ -24,6 +24,8 @@ def home_view(request):
     """Hiển thị trang chủ"""
     return render(request, 'tracking/home.html')
 
+def guide_view(request):
+    return render(request, 'tracking/guide.html')
 
 def login_view(request):
     """Đăng nhập qua form HTML"""

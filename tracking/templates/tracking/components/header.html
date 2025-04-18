@@ -10,6 +10,9 @@
           <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Trang chủ</a>
         </li>
         <li>
+          <a href="{% url 'guide' %}" class="{% if request.path == '/guide/' %}active{% endif %}">Hướng dẫn</a>
+        </li>        
+        <li>
           <a href="{% url 'map' %}" class="{% if request.path == '/map/' %}active{% endif %}">Bản đồ</a>
         </li>
 

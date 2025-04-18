@@ -1,0 +1,23 @@
+{% extends 'tracking/master.html' %}
+{% block title %}Hướng dẫn sử dụng{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 50px;">
+  <div class="container">
+    <h3 class="text-center mb-4">📘 Hướng dẫn sử dụng ứng dụng Realtime GIS</h3>
+    <div class="card p-4 shadow-lg rounded-4">
+      <ol class="fs-5">
+        <li class="mb-3">Vào mục <strong>Đăng ký</strong> để tạo tài khoản hoặc <strong>Đăng nhập</strong> nếu đã có tài khoản.</li>
+        <li class="mb-3">Sau khi đăng nhập, bạn có thể chọn ảnh đại diện trong mục <strong>Thông tin người dùng</strong>.
+            <ul>
+                (Ảnh đại diện sẽ được sử dụng để hiển thị trên bản đồ, giúp phân biệt bạn với những người dùng khác.)
+            </ul>
+        </li>
+        <li class="mb-3">Truy cập mục <strong>Bản đồ</strong> để xem vị trí của các người dùng khác. (Hãy cho phép website truy cập vào vị trí hiện tại nhé!)</li>
+        <li class="mb-3">Dữ liệu vị trí được cập nhật <strong>tự động mỗi 10 giây</strong>.</li>
+        <li class="mb-3">Sử dụng thanh <strong>Tìm kiếm</strong> để tìm người dùng theo tên và nhấn <strong>"Tìm đường đi"</strong> để hiển thị lộ trình.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+{% endblock %}
