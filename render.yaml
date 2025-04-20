@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: my-django-app
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn gis_project.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: gis_project.settings
+      - key: PYTHON_VERSION
+        value: 3.11.11
