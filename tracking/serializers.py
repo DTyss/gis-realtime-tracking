@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User, Location
+from django.utils import timezone
 from django.contrib.auth import authenticate
 
 # -----------------------------
@@ -48,7 +49,14 @@ class LocationCreateSerializer(serializers.ModelSerializer):
 class LocationSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     avatar = serializers.CharField(source='user.avatar')  # Đường dẫn ảnh avatar của user
+    is_online = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ['user', 'latitude', 'longitude', 'timestamp', 'avatar']
+        fields = ['user', 'latitude', 'longitude', 'timestamp', 'avatar', 'is_online']
+
+    def get_is_online(self, obj):
+        now = timezone.now()
+        if obj.user.last_seen:
+            return (now - obj.user.last_seen).total_seconds() < 30
+        return False

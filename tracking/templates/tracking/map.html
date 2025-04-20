@@ -26,7 +26,22 @@
     <div class="container">
       <h3 class="text-center mb-4">Vị trí người dùng (Realtime)</h3>
 
-      <!-- THANH TÌM KIẾM đưa xuống dưới tiêu đề -->
+      <!-- Nút mở sidebar -->
+      <button id="toggleSidebarBtn" class="btn btn-dark position-absolute" style="top: 120px; left: 15px; z-index: 9999;margin: 20px 0 0 0">👥 Người dùng</button>
+
+      <!-- Sidebar trạng thái người dùng -->
+      <div id="userStatusSidebar" class="user-status-sidebar shadow">
+        <h5 class="px-3 pt-3 mb-2">Trạng thái người dùng</h5>
+        <div class="px-3 pb-3">
+          <button class="btn btn-sm btn-success w-100 mb-2" onclick="toggleList('online')">Trực tuyến</button>
+          <ul id="onlineUsers" class="list-group mb-3 user-scrollable"></ul>
+
+          <button class="btn btn-sm btn-secondary w-100 mb-2" onclick="toggleList('offline')">Ngoại tuyến</button>
+          <ul id="offlineUsers" class="list-group user-scrollable"></ul>
+        </div>
+      </div>
+
+      <!-- THANH TÌM KIẾM -->
       <div class="row mb-4 justify-content-center">
         <div class="col-md-8">
           <div class="input-group">

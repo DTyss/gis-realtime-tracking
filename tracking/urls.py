@@ -6,7 +6,7 @@ from .views import (
 
     # API views
     RegisterView, LoginView, LogoutView,
-    LocationUpdateView, LocationFetchView, AllUserLocationsView
+    LocationUpdateView, LocationFetchView, AllUserLocationsView, UserStatusListView,
 )
 
 urlpatterns = [
@@ -36,4 +36,6 @@ urlpatterns = [
     path('api/update_location/', LocationUpdateView.as_view(), name='api-update-location'),  # Cập nhật vị trí
     path('api/get_user_location/<str:username>/', LocationFetchView.as_view(), name='api-user-location'),  # Lấy vị trí 1 user
     path('api/get_all_locations/', AllUserLocationsView.as_view(), name='api-all-locations'),  # Lấy toàn bộ vị trí mới nhất
+    path('api/user_status/', UserStatusListView.as_view(), name='api-user-status'),
+    # Lấy danh sách người dùng online/offline
 ]

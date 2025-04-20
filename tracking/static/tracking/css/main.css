@@ -1366,3 +1366,36 @@ section,
 .clients .swiper-pagination .swiper-pagination-bullet-active {
   background-color: var(--accent-color);
 }
+
+/* USER STATUS */
+.user-status-sidebar {
+  position: absolute;
+  top: 120px;
+  left: 150px; /* nằm ngay cạnh nút */
+  width: 260px;
+  background: #fff;
+  z-index: 10000; /* nằm trên mọi thành phần */
+  max-height: 80vh;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: none;
+}
+
+.user-status-sidebar h5 {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.user-status-sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.user-scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}

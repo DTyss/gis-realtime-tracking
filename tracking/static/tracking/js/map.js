@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json()
             })
             .then((loc) => {
-                const { latitude, longitude, timestamp } = loc
+                const { latitude, longitude, timestamp, is_online, avatar } = loc
 
                 // Format thời gian sang múi giờ Việt Nam (GMT+7)
                 const updatedAt = new Date(timestamp)
@@ -118,6 +118,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 `).openPopup()
 
                 map.setView([latitude, longitude], 16)
+                if (!is_online) {
+                    alert(`${username} hiện không trực tuyến.`)
+                }
             })
             .catch((error) => {
                 alert(error.message)
@@ -254,3 +257,41 @@ function getCSRFToken() {
     }
     return ''
 }
+
+
+document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+    const sidebar = document.getElementById('userStatusSidebar')
+    sidebar.style.display = sidebar.style.display === 'block' ? 'none' : 'block'
+  })
+  
+  function toggleList(type) {
+    const list = document.getElementById(type + 'Users')
+    list.style.display = list.style.display === 'none' ? 'block' : 'none'
+  }
+  
+  function fetchUserStatus() {
+    fetch('/api/user_status/')
+      .then(res => res.json())
+      .then(data => {
+        const onlineList = document.getElementById('onlineUsers')
+        const offlineList = document.getElementById('offlineUsers')
+        onlineList.innerHTML = ''
+        offlineList.innerHTML = ''
+  
+        data.forEach(user => {
+          const li = document.createElement('li')
+          li.textContent = user.username
+          li.classList.add('list-group-item', 'py-1')
+  
+          if (user.online) {
+            onlineList.appendChild(li)
+          } else {
+            offlineList.appendChild(li)
+          }
+        })
+      })
+      .catch(err => console.error('Lỗi tải trạng thái:', err))
+  }
+  
+  fetchUserStatus()
+  setInterval(fetchUserStatus, 10000)

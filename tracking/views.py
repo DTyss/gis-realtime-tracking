@@ -7,10 +7,15 @@ from django.contrib.auth import authenticate, login as auth_login, logout, get_u
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.utils import timezone
+from django.utils.timezone import now
+
+from datetime import timedelta
 
 from .models import User, Location
 from .serializers import RegisterSerializer, LoginSerializer, LocationSerializer, LocationCreateSerializer
 from .forms import UpdateProfileForm
+
 
 import os
 
@@ -157,6 +162,8 @@ class LocationUpdateView(APIView):
         serializer = LocationCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
+            request.user.last_seen = timezone.now()
+            request.user.save(update_fields=['last_seen'])
             return Response({"message": "Location updated"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -168,9 +175,11 @@ class LocationFetchView(APIView):
     def get(self, request, username):
         try:
             user = User.objects.get(username=username)
-            location = Location.objects.filter(user=user).latest('timestamp')
-            serializer = LocationSerializer(location)
-            return Response(serializer.data)
+            latest = Location.objects.filter(user=user).latest('timestamp')
+            is_online = user.last_seen and timezone.now() - user.last_seen < timedelta(seconds=15)
+            data = LocationSerializer(latest).data
+            data['is_online'] = is_online
+            return Response(data)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=404)
         except Location.DoesNotExist:
@@ -182,11 +191,30 @@ class AllUserLocationsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        now = timezone.now()
         locations = []
         users = User.objects.all()
         for user in users:
-            latest = Location.objects.filter(user=user).order_by('-timestamp').first()
-            if latest:
-                locations.append(latest)
+            if user.last_seen and now - user.last_seen < timedelta(seconds=30):
+                latest = Location.objects.filter(user=user).order_by('-timestamp').first()
+                if latest:
+                    locations.append(latest)
         serializer = LocationSerializer(locations, many=True)
         return Response(serializer.data)
+
+class UserStatusListView(APIView):
+    """API - Trả về danh sách người dùng phân theo online/offline"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        users = User.objects.all().order_by('username')
+        now_time = now()
+        data = []
+        for user in users:
+            is_online = user.last_seen and now_time - user.last_seen < timedelta(seconds=30)
+            data.append({
+                'username': user.username,
+                'avatar': user.avatar,
+                'online': is_online
+            })
+        return Response(data)
