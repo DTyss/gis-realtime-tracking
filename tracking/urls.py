@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     # HTML views
-    home_view, login_view, register_view, logout_view,
+    home_view, login_view, register_view, logout_view, guide_view,
     map_view, profile_view, update_profile_view, change_password_view,
 
     # API views
@@ -15,6 +15,7 @@ urlpatterns = [
     # -------------------------
 
     path('', home_view, name='home'),  # Trang chủ
+    path('guide/', guide_view, name='guide'),  # Hướng dẫn sử dụng
     path('login/', login_view, name='login'),  # Đăng nhập
     path('register/', register_view, name='register'),  # Đăng ký
     path('logout/', logout_view, name='logout'),  # Đăng xuất

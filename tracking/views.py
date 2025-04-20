@@ -24,6 +24,8 @@ def home_view(request):
     """Hiển thị trang chủ"""
     return render(request, 'tracking/home.html')
 
+def guide_view(request):
+    return render(request, 'tracking/guide.html')
 
 def login_view(request):
     """Đăng nhập qua form HTML"""
@@ -55,7 +57,7 @@ def register_view(request):
 
         user = User.objects.create_user(username=username, password=password, email=email)
         auth_login(request, user)
-        return redirect('login')
+        return redirect('map')
 
     return render(request, 'tracking/register.html')
 
